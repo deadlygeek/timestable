@@ -1,7 +1,7 @@
 Timestable
 ==========
 
-A simple javascript project that helps you learn 1-10 times table.
+A simple javascript project that helps you learn the times table (1-10).
 
 Built with node.js using the following modules;
 + grunt
@@ -11,3 +11,9 @@ Built with node.js using the following modules;
 + grunt-contrib-watch
 
 See [here](http://www.deadlygeek.com/js-labs/tt/index.html) for running example.  Optimized for mobile platform.
+
+Backlog
+-------
++ Filter to remove number sets like 1,2,3 etc...
++ Refactor gameViewController to remove dependency on jQuery
+

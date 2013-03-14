@@ -2,6 +2,7 @@
     'use strict';
 
     var userAnswer = "0";
+    var isKeypadActive = true;
     var correctAnswer;
     var INPUT_INTERVAL_DELAY = 300;
     var RESULTS_INTERVAL_DELAY_CORRECT = 1000;
@@ -17,9 +18,9 @@
         correctAnswer = currentQuestion.multiplicand * currentQuestion.multiplier;
 
         //push the question onto the screen
-        $('#question').html(currentQuestion.multiplicand + " x " + currentQuestion.multiplier + " = ?");
+        updateQuestion(currentQuestion.multiplicand + " x " + currentQuestion.multiplier + " = ?");
 
-        linkKeyPad();
+        isKeypadActive = true;
 
         //start the timer
         simpleTimer.startTimer();
@@ -45,7 +46,7 @@
             intervalDelay = RESULTS_INTERVAL_DELAY_WRONG;
         }
 
-        unlinkKeyPad();
+        isKeypadActive = false;
 
         updateAnswer("");
         clearInterval(showResultsIntervalID);
@@ -102,47 +103,52 @@
         updateAnswer(userAnswer);
     };
 
+    var updateQuestion = function(value) {
+        viewHandlers.questionUpdateHandler(value);
+    };
+
     var updateResults = function(value) {
-        $('#result').html(value);
+        viewHandlers.resultsUpdateHandler(value);
     };
 
     var updateAnswer = function(value) {
-        $('#answer').html(value);
+        viewHandlers.answerUpdateHandler(value);
     };
 
-
-    var handleTap = function(e) {
-        var key; 
-
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        key = e.currentTarget.attributes['key-value'].value;
-
-        if (key === "c") {
-            clearNumbers();
-        } else if (key === "e") {
-            checkAnswer();
-        } else {
-            handleInput(key);
-        }
-
-    };
-
-    var unlinkKeyPad = function() {
-        $(".keybutton").unbind("tap", handleTap);
-    };
-
-    var linkKeyPad = function() {
-        $(".keybutton").bind("tap", handleTap);
+    var viewHandlers = {
+        questionUpdateHandler: undefined,
+        resultsUpdateHandler: undefined,
+        answerUpdateHandler: undefined
     };
 
 
     //PUBLIC API
+    this.gc = {};
 
-    this.gvc = {};
+    this.gc.handleKeyInput = function(key) {
 
-    this.gvc.initGame = function() {
+//        e.preventDefault();
+//        e.stopImmediatePropagation();
+//        key = e.currentTarget.attributes['key-value'].value;
+        
+        if (isKeypadActive) {
+            if (key === "c") {
+                clearNumbers();
+            } else if (key === "e") {
+                checkAnswer();
+            } else {
+                handleInput(key);
+            }
+        }
+    };
+
+    this.gc.initGame = function(questionUpdateHandler, resultsUpdateHandler, answerUpdateHandler) {
+
+        //link the view function handlers othe handlers object.
+        viewHandlers.questionUpdateHandler = questionUpdateHandler;
+        viewHandlers.resultsUpdateHandler = resultsUpdateHandler;
+        viewHandlers.answerUpdateHandler = answerUpdateHandler;
+
         pickNewQuestion();
     };
 
