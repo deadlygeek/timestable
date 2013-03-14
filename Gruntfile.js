@@ -21,7 +21,7 @@ module.exports = function(grunt) {
         },
         uglify: {
             options: {
-                banner: '// human readable source available at: \n',
+                banner: '// human readable source available at: https://github.com/deadlygeek/timestable\n',
             },
             build: {
                 src: '<%= meta.src %>',
