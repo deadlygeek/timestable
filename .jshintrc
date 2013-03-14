@@ -1,0 +1,23 @@
+{
+    "globals": {
+        "app": false,
+        "tt": false,
+        "simpleTimer": false,
+        "it": false,
+        "describe": false,
+        "alert": false,
+        "expect": false
+    },
+    "browser": true,
+    "jquery": true,
+    "strict": true,
+    "camelcase": true,
+    "undef":  true,
+    "unused": true,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "immed": true,
+    "latedef": true,
+    "indent": 4
+}

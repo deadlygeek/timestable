@@ -1,0 +1,18 @@
+{
+  "name": "timestable",
+  "version": "0.0.0",
+  "description": "A simple game that test multiplication tables",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "author": "Craig Walker",
+  "license": "BSD",
+  "devDependencies": {
+    "grunt-contrib-jasmine": "~0.3.3",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-contrib-jshint": "~0.2.0",
+    "grunt-contrib-uglify": "~0.1.2"
+  }
+}
