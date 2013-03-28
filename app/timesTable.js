@@ -3,6 +3,8 @@
 
     var me = this;
 
+    //an array of numbers that will not be shown to the user
+    var filter = [];
 
     /*
      * 
@@ -78,14 +80,14 @@
     };
 
     //pass in the progress array to make it easier to test
-    this.tt.pickTopTenProgressScores = function(progress) {
+    this.tt.pickTopProgressScores = function(progress, amount) {
 
         //if a large group of items have the same time it prevents the same items from displaying over and over
         arrayShuffle(progress);
 
         progress.sort(progressSorter);
 
-        return progress.slice(0,10);
+        return progress.slice(0,amount);
     };
 
     this.tt.resetProgress = function() {
@@ -94,18 +96,68 @@
     };
 
     /*
-     * Randomly pick one progress item from the top ten highest progress scroes.
+     * Randomly pick one progress item from the top four highest progress scroes.
      */
     this.tt.choose = function() {
 
         //get the top ten items
-        var topTenItems = tt.pickTopTenProgressScores(tt.progress);
+        var topTenItems = tt.pickTopProgressScores(tt.progress, 4);
 
         //randomly pick 1 item from the top ten items.
         var item = topTenItems[Math.floor(Math.random() * topTenItems.length)];
 
         return item;
 
+    };
+
+    this.tt.setFilter = function(newFilters) {
+
+        filter = newFilters;
+
+    };
+
+    this.tt.getFilter = function() {
+
+        return filter;
+
+    };
+
+    this.tt.loadFilters = function() {
+
+        if (!supportsLocalStorage()) {
+            return false;
+        }
+
+        var stringFilter = localStorage["timestable.progress.filter"];
+
+        filter =  stringFilter.split(",");
+
+        if (filter.length > 0) {
+
+            //convert the filters into ints
+            for (var i=0; i < filter.length; i++) {
+                filter[i] = parseInt(filter[i], 10);
+            }
+
+            return filter;
+
+        } else {
+
+            //no filters saved
+            
+            filter = [];
+            return filter;
+        }
+
+    };
+
+    this.tt.saveFilters = function() {
+
+        if (!supportsLocalStorage()) {
+            return false;
+        }
+
+        localStorage["timestable.progress.filter"] = filter;
     };
 
     this.tt.loadProgress = function() {
@@ -124,6 +176,7 @@
         tt.progress = [];
 
         index = 0;
+        var includeInQuestions;
 
         for (i = 0; i <= 9; i++) {
             for (y = 0; y <= 9; y++) {
@@ -148,8 +201,19 @@
                 }
                 // end sanity checks //
 
-                //push the data object into the progress array
-                tt.progress.push({'ms': ms, 'multiplicand': multiplicand, 'multiplier': multiplier});
+                //push the data object into the progress array as long as it is not in the filter array
+                includeInQuestions = true;
+
+                for (var z = 0; z < filter.length; z++) {
+                    if (multiplier === filter[z] || multiplicand === filter[z]) {
+                        includeInQuestions = false;
+                        break;
+                    }
+                }
+
+                if (includeInQuestions) {
+                    tt.progress.push({'ms': ms, 'multiplicand': multiplicand, 'multiplier': multiplier});
+                }
 
                 index += 1;
 

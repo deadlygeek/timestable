@@ -29,7 +29,7 @@ describe("Confirm progress data", function() {
     tempArray.push({'ms':2, 'multiplicand': 1, 'multiplier': 1});
 
     it("tt should return ten items that are sorted from largest to smallest.", function() {
-        var newArray = tt.pickTopTenProgressScores(tempArray);
+        var newArray = tt.pickTopProgressScores(tempArray,10);
         expect(newArray[0].ms).toBe(9000);
         expect(newArray[1].ms).toBe(7000);
         expect(newArray[2].ms).toBe(700);
@@ -44,7 +44,7 @@ describe("Confirm progress data", function() {
 
     });
     it("when tt sorts an array of progress objects it should return a top ten array that has 10 elements .", function() {
-        var newArray = tt.pickTopTenProgressScores(tempArray);
+        var newArray = tt.pickTopProgressScores(tempArray,10);
         expect(newArray.length).toBe(10);
     });
 
@@ -57,6 +57,7 @@ describe("Confirm progress data", function() {
         expect(isNaN(item.multiplicand)).not.toBe(true);
         expect(isNaN(item.multiplier)).not.toBe(true);
     });
+
 
     it("when loading a progress the current progress should be overriden", function() {
         tt.resetProgress();
@@ -93,6 +94,36 @@ describe("Confirm progress data", function() {
         expect(tt.progress[25].multiplicand).toBe(2);
         expect(tt.progress[25].multiplier).toBe(5);
         expect(tt.progress[25].ms).toBe(10000);
+
+    });
+
+    it("test the filtering of multiplicand and multiplier", function() {
+
+        tt.setFilter([0,1,2,3,4,5,6,7]);
+        tt.saveFilters();
+        tt.loadProgress();
+        for (var i = 0; i < tt.progress.length; i++) {
+            //test multiplier
+            expect(tt.progress[i].multiplier).not.toBe(0);
+            expect(tt.progress[i].multiplier).not.toBe(1);
+            expect(tt.progress[i].multiplier).not.toBe(2);
+            expect(tt.progress[i].multiplier).not.toBe(3);
+            expect(tt.progress[i].multiplier).not.toBe(4);
+            expect(tt.progress[i].multiplier).not.toBe(5);
+            expect(tt.progress[i].multiplier).not.toBe(6);
+            expect(tt.progress[i].multiplier).not.toBe(7);
+
+            //test multiplicand
+            expect(tt.progress[i].multiplicand).not.toBe(0);
+            expect(tt.progress[i].multiplicand).not.toBe(1);
+            expect(tt.progress[i].multiplicand).not.toBe(2);
+            expect(tt.progress[i].multiplicand).not.toBe(3);
+            expect(tt.progress[i].multiplicand).not.toBe(4);
+            expect(tt.progress[i].multiplicand).not.toBe(5);
+            expect(tt.progress[i].multiplicand).not.toBe(6);
+            expect(tt.progress[i].multiplicand).not.toBe(7);
+        }
+        
 
     });
 
