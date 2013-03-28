@@ -15,7 +15,7 @@ See [here](http://www.deadlygeek.com/js-labs/tt/index.html) for running example.
 Backlog
 -------
 [ ] Non-Mobile platforms should support keyboard input...
-[ ] Filter to remove number sets like 1,2,3 etc...
-[ ] Randomly pick from the top four instead of the top ten.
+[X] Filter to remove number sets like 1,2,3 etc...
+[X] Randomly pick from the top four instead of the top ten.
 [X] Refactor gameViewController to remove dependency on jQuery
 
