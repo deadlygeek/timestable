@@ -144,6 +144,8 @@
 
     this.gc.initGame = function(questionUpdateHandler, resultsUpdateHandler, answerUpdateHandler) {
 
+        //tt.loadFilters();
+
         //link the view function handlers othe handlers object.
         viewHandlers.questionUpdateHandler = questionUpdateHandler;
         viewHandlers.resultsUpdateHandler = resultsUpdateHandler;
