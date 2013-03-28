@@ -58,50 +58,11 @@ describe("Confirm progress data", function() {
         expect(isNaN(item.multiplier)).not.toBe(true);
     });
 
-
-    it("when loading a progress the current progress should be overriden", function() {
-        tt.resetProgress();
-        expect(tt.progress[0].multiplicand).toBe(0);
-        expect(tt.progress[0].multiplier).toBe(0);
-        expect(tt.progress[0].ms).toBe(10000);
-        expect(tt.progress[25].multiplicand).toBe(2);
-        expect(tt.progress[25].multiplier).toBe(5);
-        expect(tt.progress[25].ms).toBe(10000);
-
-        //override the progress values
-        tt.progress[0].multiplicand = "apple";
-        tt.progress[0].multiplier = 31;
-        tt.progress[0].ms = 2;
-        tt.progress[25].multiplicand = "pear";
-        tt.progress[25].multiplier = 100;
-        tt.progress[25].ms = 333;
-
-        //test that the over ride progress values are there
-        expect(tt.progress[0].multiplicand).toBe("apple");
-        expect(tt.progress[0].multiplier).toBe(31);
-        expect(tt.progress[0].ms).toBe(2);
-        expect(tt.progress[25].multiplicand).toBe("pear");
-        expect(tt.progress[25].multiplier).toBe(100);
-        expect(tt.progress[25].ms).toBe(333);
-
-        //load the progress
-        tt.loadProgress();
-
-        //test that the over ridden values have been replaced with expected defaults
-        expect(tt.progress[0].multiplicand).toBe(0);
-        expect(tt.progress[0].multiplier).toBe(0);
-        expect(tt.progress[0].ms).toBe(10000);
-        expect(tt.progress[25].multiplicand).toBe(2);
-        expect(tt.progress[25].multiplier).toBe(5);
-        expect(tt.progress[25].ms).toBe(10000);
-
-    });
-
     it("test the filtering of multiplicand and multiplier", function() {
 
         tt.setFilter([0,1,2,3,4,5,6,7]);
-        tt.saveFilters();
-        tt.loadProgress();
+        tt.resetProgress();
+
         for (var i = 0; i < tt.progress.length; i++) {
             //test multiplier
             expect(tt.progress[i].multiplier).not.toBe(0);

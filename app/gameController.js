@@ -52,9 +52,6 @@
         clearInterval(showResultsIntervalID);
         showResultsIntervalID = setInterval(handleShowResultsTimer, intervalDelay);
 
-        //save the results
-        tt.saveProgress();
-
     };
 
     var handleShowResultsTimer = function() {
@@ -127,10 +124,6 @@
 
     this.gc.handleKeyInput = function(key) {
 
-//        e.preventDefault();
-//        e.stopImmediatePropagation();
-//        key = e.currentTarget.attributes['key-value'].value;
-        
         if (isKeypadActive) {
             if (key === "c") {
                 clearNumbers();
@@ -144,12 +137,12 @@
 
     this.gc.initGame = function(questionUpdateHandler, resultsUpdateHandler, answerUpdateHandler) {
 
-        //tt.loadFilters();
-
         //link the view function handlers othe handlers object.
         viewHandlers.questionUpdateHandler = questionUpdateHandler;
         viewHandlers.resultsUpdateHandler = resultsUpdateHandler;
         viewHandlers.answerUpdateHandler = answerUpdateHandler;
+
+        tt.resetProgress();
 
         pickNewQuestion();
     };

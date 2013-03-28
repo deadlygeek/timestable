@@ -30,22 +30,27 @@
     this.tt.STARTING_PROGRESS = 10000;
     this.tt.progress = [];
 
-    //detect if current environment supports localStorage
-    var supportsLocalStorage = function() {
-        try {
-            return 'localStorage' in window && window.localStorage !== null;
-        } catch (e) {
-            return false;
-        }
-    };
-
     //a helper function used to create / reset the progress array
     var initProgress = function() {
         var ra = [];
+        var includeInQuestions;
+
         for (var i = 0; i <= 9; i++) {
             for (var y = 0; y <= 9; y++) {
-                var tempObj = {'ms':me.tt.STARTING_PROGRESS, 'multiplicand': i, 'multiplier': y};
-                ra.push(tempObj);
+
+                includeInQuestions = true;
+
+                for (var z = 0; z < filter.length; z++) {
+                    if (y === filter[z] || i === filter[z]) {
+                        includeInQuestions = false;
+                        break;
+                    }
+                }
+
+                if (includeInQuestions) {
+                    var tempObj = {'ms':me.tt.STARTING_PROGRESS, 'multiplicand': i, 'multiplier': y};
+                    ra.push(tempObj);
+                }
             }
         }
 
@@ -111,132 +116,11 @@
     };
 
     this.tt.setFilter = function(newFilters) {
-
         filter = newFilters;
-
     };
 
     this.tt.getFilter = function() {
-
         return filter;
-
-    };
-
-    this.tt.loadFilters = function() {
-
-        if (!supportsLocalStorage()) {
-            return false;
-        }
-
-        var stringFilter = localStorage["timestable.progress.filter"];
-
-        filter =  stringFilter.split(",");
-
-        if (filter.length > 0) {
-
-            //convert the filters into ints
-            for (var i=0; i < filter.length; i++) {
-                filter[i] = parseInt(filter[i], 10);
-            }
-
-            return filter;
-
-        } else {
-
-            //no filters saved
-            
-            filter = [];
-            return filter;
-        }
-
-    };
-
-    this.tt.saveFilters = function() {
-
-        if (!supportsLocalStorage()) {
-            return false;
-        }
-
-        localStorage["timestable.progress.filter"] = filter;
-    };
-
-    this.tt.loadProgress = function() {
-        //TODO: what if localStarage not supported -- need a nice way to handle this
-
-        var i, y, index, ms, multiplicand, multiplier;
-
-        if (!supportsLocalStorage()) {
-            alert("Your browsers does not support localStorage. Progress will not be saved on exit.");
-            tt.resetProgress();
-
-            return false;
-        }
-
-        //clear progress so a new one can be loaded
-        tt.progress = [];
-
-        index = 0;
-        var includeInQuestions;
-
-        for (i = 0; i <= 9; i++) {
-            for (y = 0; y <= 9; y++) {
-                ms = parseInt(localStorage["timestable.progress.ms." + index], 10);
-                multiplicand = parseInt(localStorage["timestable.progress.multiplicand." + index], 10);
-                multiplier = parseInt(localStorage["timestable.progress.multiplier." + index], 10);
-
-                // sanity checks //
-                if (0 >= ms && ms <= 10000) {
-                } else {
-                    ms = tt.STARTING_PROGRESS;
-                }
-
-                if (0 <= multiplicand && multiplicand <= 9) {
-                } else {
-                    multiplicand = i;
-                }
-
-                if (0 <= multiplier && multiplier <= 9) {
-                } else {
-                    multiplier = y;
-                }
-                // end sanity checks //
-
-                //push the data object into the progress array as long as it is not in the filter array
-                includeInQuestions = true;
-
-                for (var z = 0; z < filter.length; z++) {
-                    if (multiplier === filter[z] || multiplicand === filter[z]) {
-                        includeInQuestions = false;
-                        break;
-                    }
-                }
-
-                if (includeInQuestions) {
-                    tt.progress.push({'ms': ms, 'multiplicand': multiplicand, 'multiplier': multiplier});
-                }
-
-                index += 1;
-
-            }
-        }
-
-        return tt.progress;
-
-    };
-
-    this.tt.saveProgress = function() {
-        var i;
-
-        if (!supportsLocalStorage()) {
-            return false;
-        }
-
-        for (i = 0; i < tt.progress.length; i++) {
-            localStorage["timestable.progress.ms." + i] = tt.progress[i].ms;
-            localStorage["timestable.progress.multiplicand." + i] = tt.progress[i].multiplicand;
-            localStorage["timestable.progress.multiplier." + i] = tt.progress[i].multiplier;
-        } 
-
     };
 
 }).call(this);
