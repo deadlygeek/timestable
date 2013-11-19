@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Times Table</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.css" />
+  <link rel="stylesheet" href="css/app.css">
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.3.0/jquery.mobile-1.3.0.min.js"></script>
+  <script src="js/app.min.js" type="text/javascript"></script>
+   <!--
+  <script src="js/timesTable.js" type="text/javascript"></script>
+  <script src="js/gameViewController.js" type="text/javascript"></script>
+  <script src="js/timerModel.js" type="text/javascript"></script>
+   -->
+</head>
+<body>
+
+    <section id="home" data-role="page">
+        <header data-role="header">
+             <h1>Times Tables</h1>
+            <a href="#filters" data-icon="gear" class="ui-btn-right">Filters</a>
+        </header>
+        <div data-role="content">
+            <p>Learn your numbers.</p>
+            <div class="centre-wrapper">
+                <p><a href="#play" data-role="button">PLAY NOW</a></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="filters" data-role="page">
+        <header data-role="header">
+            <a href="#home" data-icon="home" class="ui-btn-left">Home</a>
+            <h1>Filters</h1>
+        </header>
+        <div data-role="content">
+            <div>Selected numbers will NOT be used.</div>
+            <form>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <input type="checkbox" name="radio-choice-h-2" id="cb1">
+                    <label for="cb1">1</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb2">
+                    <label for="cb2">2</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb3">
+                    <label for="cb3">3</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb4">
+                    <label for="cb4">4</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb5">
+                    <label for="cb5">5</label>
+                </fieldset>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <input type="checkbox" name="radio-choice-h-2" id="cb6" >
+                    <label for="cb6">6</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb7" >
+                    <label for="cb7">7</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb8">
+                    <label for="cb8">8</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb9">
+                    <label for="cb9">9</label>
+                    <input type="checkbox" name="radio-choice-h-2" id="cb0">
+                    <label for="cb0">0</label>
+                </fieldset>
+            </form>
+            <br>
+            <div class="centre-wrapper">
+                <p><a href="#play" data-role="button">PLAY NOW</a></p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="play" data-role="page">
+        <header data-role="header">
+             <h1>Play</h1>
+        </header>
+
+        <div data-role="content">
+            <div class="centre-wrapper">
+                <h1 id="question"></h1>
+                <h3 id='answer'>0</h3>
+                <h3 id='result'></h3>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a"><a href="#" key-value="7" class="keybutton" data-role="button">7</a></div>
+                <div class="ui-block-b"><a href="#" key-value="8" class="keybutton" data-role="button">8</a></div>
+                <div class="ui-block-c"><a href="#" key-value="9" class="keybutton" data-role="button">9</a></div>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a"><a href="#" key-value="4" class="keybutton" data-role="button">4</a></div>
+                <div class="ui-block-b"><a href="#" key-value="5" class="keybutton" data-role="button">5</a></div>
+                <div class="ui-block-c"><a href="#" key-value="6" class="keybutton" data-role="button">6</a></div>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a"><a href="#" key-value="1" class="keybutton" data-role="button">1</a></div>
+                <div class="ui-block-b"><a href="#" key-value="2" class="keybutton" data-role="button">2</a></div>
+                <div class="ui-block-c"><a href="#" key-value="3" class="keybutton" data-role="button">3</a></div>
+            </div>
+            <div class="ui-grid-b">
+                <div class="ui-block-a"><a href="#" key-value="c" class="keybutton" data-role="button">clear</a></div>
+                <div class="ui-block-b"><a href="#" key-value="0" class="keybutton" data-role="button">0</a></div>
+                <div class="ui-block-c"><a href="#" key-value="e" class="keybutton" data-role="button">enter</a></div>
+            </div>
+        </div>
+
+        <footer data-role="footer" class="ui-bar">
+            <a href="#home" data-icon="home">END</a>
+        </footer>
+    </section>
+    
+    <script type="text/javascript">
+
+        var filters;
+
+        tt.resetProgress();
+
+        var questionUpdate = function(value) {
+            $('#question').html(value);
+        };
+
+        var resultUpdate = function(value) {
+            $('#result').html(value);
+        };
+
+        var answerUpdate = function(value) {
+            $('#answer').html(value);
+        };
+
+        var filtersSave = function() {
+            //create a blank array
+            var newFilter = [];
+
+            //loop over each radio choice and check if it is checked
+            for (var i=0; i <= 9; i++) {
+                if ($("#cb" + i).is(":checked")) {
+                    //if it is then push that number into the array
+                    newFilter.push(i);
+                }
+            }
+
+            //set filters as this new array
+            tt.setFilter(newFilter);
+            tt.resetProgress();
+
+            
+        };
+
+        var handleTap = function(e) {
+            var key; 
+
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            key = e.currentTarget.attributes['key-value'].value;
+
+            gc.handleKeyInput(key);
+        };
+
+        $("document").ready( function() {
+            $('#play').bind('pageshow',function(){
+                gc.initGame(questionUpdate, resultUpdate, answerUpdate);
+            });
+
+            $('#play').bind('pagehide',function(){
+                simpleTimer.stopTimer();
+            });
+
+            //when the filter page is exited you need to save any changes the user made.
+            $('#filters').bind('pagehide', function(){
+                filtersSave();
+            });
+
+            $(".keybutton").bind("tap", handleTap);
+        });
+
+    </script>
+</body>
+</html>
